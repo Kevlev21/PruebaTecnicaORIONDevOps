@@ -1,0 +1,36 @@
+name: CI/CD Pipeline - ORION Platform
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Go (for orders-service)
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.21'
+
+      - name: Build and Test Orders Service
+        run: |
+          cd orders-service
+          go test -v ./...
+
+      - name: Set up Java (for reception-service)
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Build Reception Service (Gradle)
+        run: |
+          cd reception-service
+          ./gradlew build -x test
