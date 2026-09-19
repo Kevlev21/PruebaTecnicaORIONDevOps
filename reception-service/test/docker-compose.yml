@@ -9,6 +9,14 @@ services:
       POSTGRES_DB: resception_test
     ports:
       - "5433:5432"
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+          cpus: '0.5'
+        reservations:
+          memory: 512M
+          cpus: '0.1'
 
   # rabbitmq:
   #   image: 'rabbitmq:3-management'
@@ -31,4 +39,6 @@ services:
 
 volumes:
   test_data:
+
+
 
