@@ -1,160 +1,37 @@
-# ORION Platform Engineering Challenge
+# Prueba Técnica - DevOps & Platform Engineer (Plataforma ORION)
 
-## Introducción
-
-Bienvenido a la prueba técnica para el cargo de DevOps & Platform Engineer.
-El objetivo de esta evaluación es validar tus capacidades para diseñar, automatizar, desplegar y operar plataformas tecnológicas modernas basadas en contenedores y Kubernetes.
-La prueba busca simular una situación real donde un equipo de desarrollo ha construido una solución funcional, pero aún no existe una estrategia de despliegue, automatización, seguridad y operación.
----
-
-# Contexto de Negocio
-
-La plataforma ORION soporta aplicaciones utilizadas en Sistemas Inteligentes de Transporte (ITS).
-Actualmente el equipo de desarrollo ha construido una solución basada en microservicios que permite registrar órdenes y procesarlas mediante mensajería asíncrona.
-La solución está compuesta por:
-- Orders API
-- reception-service
-- Message Broker (RabbitMQ)
-La aplicación actualmente funciona en entorno local de desarrollo.
-Sin embargo, la organización necesita preparar la solución para ambientes empresariales utilizando prácticas modernas de DevOps y Platform Engineering.
-ver README de cada servicio para mayor entendimiento del mismo. 
----
-# Arquitectura Actual
-
-```text
-Cliente
-   │
-   ▼
-Orders API
-   │
-   ▼
-RabbitMQ
-   │
-   ▼
-Orders Worker
-```
+Este repositorio contiene la solución completa para la prueba técnica de infraestructura, automatización y confiabilidad de la plataforma ORION, estructurada bajo las mejores prácticas de ingeniería de plataforma.
 
 ---
-# Objetivo
-Preparar la plataforma para su despliegue y operación empresarial mediante:
-- Contenerización.
-- CI/CD.
-- Kubernetes.
-- Helm.
-- Configuración segura.
-- Observabilidad.
-- Buenas prácticas operativas.
----
 
-# Código Entregado
+## Estructura del Repositorio
 
-El repositorio contiene:
-```text
-orders-service/
-orders-worker/
-```
-Ambos servicios son funcionales y pueden ejecutarse localmente.
-- La responsabilidad del candidato NO es desarrollar nuevas funcionalidades de negocio.
-- La responsabilidad principal es preparar la plataforma para ambientes productivos.
----
-
-# Alcance
-
-El backlog inicial se encuentra documentado en:
-```text
-BACKLOG.md
-```
-Antes de iniciar la implementación deberá realizar el ejercicio descrito en:
-```text
-REFINEMENT.md
-```
----
-# Tecnologías
-
-Como mínimo se espera el uso de:
-- Docker
-- Kubernetes
-Se recomienda el uso de:
-- Helm
-- GitHub Actions
-- GitLab CI/CD
-- Terraform
-- Trivy
-- SonarQube
-
-Los candidatos podrán utilizar herramientas adicionales o alternativas siempre que justifiquen técnicamente su elección y la solución sea reproducible.
----
-
-# Entregables
-
-La solución debe incluir:
-
-```text
-Dockerfile(s)
-
-docker-compose.yml
-
-Pipeline CI/CD
-
-Chart Helm (recomendado)
-
-README.md actualizado
-
-BACKLOG_REFINED.md
-
-RCA.md
-```
----
-# Ejecución Local
-
-La solución deberá poder ejecutarse localmente utilizando:
-```bash
-docker compose up
-```
----
-
-# Kubernetes
-
-Todo el despliegue deberá realizarse utilizando Helm.
-Se espera el uso de:
-- Deployment
-- Service
-- ConfigMap
-- Secret
-Según aplique.
----
-
-# Troubleshooting
-
-Durante la prueba se incluye un escenario de incidente que deberá ser analizado.
-El análisis deberá documentarse en:
-```text
-RCA.md
-```
+* **`orders-service/`** - Microservicio backend desarrollado en Go.
+* **`reception-service/`** - Microservicio backend desarrollado en Java (Gradle).
+* **`.github/workflows/ci-cd.yaml`** - Pipeline de Integración Continua (CI) en GitHub Actions.
+* **`helm/orion-platform/`** - Chart de Helm para el despliegue estandarizado en Kubernetes.
+* **`RCA.md`** - Análisis de Causa Raíz (Root Cause Analysis) sobre incidencias críticas en producción.
+* **`BACKLOG_REFINED.md`** - Backlog técnico refinado para la estabilización y optimización de la plataforma.
 
 ---
-# Evaluación
 
-Se evaluarán:
-- Docker.
-- Kubernetes.
-- Helm.
-- GitLab CI/CD.
-- Seguridad.
-- Troubleshooting.
-- Observabilidad.
-- Documentación.
-- Criterio técnico.
----
-# Herramientas y Libertad Tecnológica
+## Componentes Implementados
 
-La evaluación busca validar conocimientos y criterio técnico, no el uso de una herramienta específica.
-El repositorio de la prueba será entregado mediante GitHub, sin embargo, el candidato podrá utilizar las herramientas que considere apropiadas para resolver el desafío.
-Se valorará especialmente la capacidad de justificar las decisiones tomadas y la aplicación de buenas prácticas de automatización, seguridad, observabilidad y operación.
+### 1. Confiabilidad y Contenedorización (Docker & Docker Compose)
+* Definición de contenedores para los microservicios con **límites estrictos de recursos** (CPU y memoria) para prevenir caídas de nodos por desbordamiento (`OOMKilled`).
+* Configuración de entornos aislados para pruebas de integración con bases de datos (`db_test`).
 
----
-# Consideraciones Finales
+### 2. Automatización y CI/CD (GitHub Actions)
+* Pipeline automatizado en `.github/workflows/ci-cd.yaml` configurado para ejecutarse en cada `push` o `pull request` hacia la rama `main`.
+* **Validaciones automáticas:**
+  * **Go:** Instalación de versión 1.21 y ejecución de pruebas unitarias (`go test -v`).
+  * **Java/Gradle:** Configuración de Temurin JDK 17 y compilación automatizada del servicio de recepción (`./gradlew build`).
 
-No existe una única solución correcta.
-Se valorará especialmente la capacidad para justificar decisiones técnicas y operativas.
-En caso de asumir comportamientos o configuraciones no especificadas, documente claramente dichos supuestos.
+### 3. Despliegue en Kubernetes (Helm Charts)
+* Estructura modular bajo Helm ubicada en `helm/orion-platform/`:
+  * `Chart.yaml`: Metadatos del empaquetado de la aplicación.
+  * `values.yaml`: Parametrización centralizada de variables (réplicas, recursos, puertos).
+  * `templates/deployment.yaml`: Manifiesto de despliegue con control de ciclo de vida.
+  * `templates/service.yaml`: Exposición de red interna tipo `ClusterIP`.
+
+
