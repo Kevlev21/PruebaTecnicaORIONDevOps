@@ -9,7 +9,7 @@ on:
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -33,4 +33,4 @@ jobs:
       - name: Build Reception Service (Gradle)
         run: |
           cd reception-service
-          ./gradlew build -x test
+          gradle build -x test
