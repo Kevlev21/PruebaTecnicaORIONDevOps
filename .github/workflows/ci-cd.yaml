@@ -31,4 +31,4 @@ jobs:
 
       - name: Build Reception Service (Gradle)
         working-directory: ./reception-service
-        run: ./gradlew build -x test
+        run: bash ./gradlew build -x test
