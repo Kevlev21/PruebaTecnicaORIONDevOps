@@ -20,9 +20,8 @@ jobs:
           go-version: '1.21'
 
       - name: Build and Test Orders Service
-        run: |
-          cd orders-service
-          go test -v ./...
+        working-directory: ./orders-service
+        run: go test -v ./...
 
       - name: Set up Java (for reception-service)
         uses: actions/setup-java@v4
@@ -31,6 +30,5 @@ jobs:
           java-version: '17'
 
       - name: Build Reception Service (Gradle)
-        run: |
-          cd reception-service
-          gradle build -x test
+        working-directory: ./reception-service
+        run: ./gradlew build -x test
