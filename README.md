@@ -35,3 +35,20 @@ Este repositorio contiene la solución completa para la prueba técnica de infra
   * `templates/service.yaml`: Exposición de red interna tipo `ClusterIP`.
 
 
+### 4. Orquestación Local (Docker Compose)
+Para levantar el ecosistema completo de microservicios, bases de datos y colas de mensajes en un entorno local aislado:
+
+1. Asegurarse de estar en la raíz del repositorio y ejecutar:
+   ```bash
+   docker compose up --build -d
+
+
+2.Verificar que los servicios se encuentren operativos:
+  docker ps
+
+3) Verificar Servicios Funcionando
+
+-Panel de RabbitMQ (Gestión de Colas): http://localhost:15672 (Credenciales por defecto: guest / guest) 
+-Reception Service (Java): http://localhost:8082
+-Orders Service (Go): http://localhost:8081
+
